@@ -1,0 +1,67 @@
+#include <stdio.h>Add commentMore actions
+#include <stdlib.h>
+
+#define INF 99 
+int adj[10][10];
+
+void floydWarshall(int adj[][10], int n) {
+    int dist[n][n];
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            dist[i][j] = adj[i][j];
+        }
+    }
+
+    for (int k = 0; k < n; k++) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                int temp=dist[i][k] + dist[k][j];
+                if(temp < dist[i][j]) {
+                    dist[i][j] = temp;
+                }
+            }     
+        }
+    }
+
+
+    printf("Every pair shorest distance:\n");
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            if (dist[i][j] == INF) {
+                printf("%s\t", "INF");
+            } else {
+                printf("%d\t", dist[i][j]);
+            }
+        }
+        printf("\n");
+    }
+}
+
+int main() {
+    int n;
+    printf("Enter no of vertices:");
+    scanf("%d",&n);
+    printf("Enter cost adj matrix:\n");
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            scanf("%d",&adj[i][j]);
+        }
+    }
+    floydWarshall(adj, n);
+
+    return 0;
+}
+
+
+O/P:
+Enter no of vertices:4
+Enter cost adj matrix:
+0 99 3 99
+2 0 99 99
+99 6 0 1
+7 99 99 0
+Every pair shorest distance:
+0       9       3       4
+2       0       5       6
+8       6       0       1
+7       16      10      0
