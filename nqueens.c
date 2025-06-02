@@ -1,0 +1,66 @@
+#include <stdio.h>Add commentMore actions
+#include <stdbool.h>
+
+bool place(int[], int);
+void printSolution(int[], int);
+void nQueens(int);
+
+int main() {
+    int n;
+    printf("Enter the number of queens: ");
+    scanf("%d", &n);
+    nQueens(n);
+    return 0;
+}
+
+void nQueens(int n) {
+    int x[10];       // Stores column positions for each queen
+    int count = 0;   // Number of solutions found
+    int k = 1;       // Current row (starts from 1)
+
+    x[k] = 0;        // Initialize
+
+    while (k != 0) {
+        x[k] = x[k] + 1;
+
+        while (x[k] <= n && !place(x, k)) {
+            x[k] = x[k] + 1;
+        }
+
+        if (x[k] <= n) {
+            if (k == n) {
+                printSolution(x, n);
+                printf("Solution found\n");
+                count++;
+            } else {
+                k++;
+                x[k] = 0;
+            }
+        } else {
+            k--;
+        }
+    }
+
+    printf("Total solutions: %d\n", count);
+}
+
+bool place(int x[10], int k) {
+    int i;
+    for (i = 1; i < k; i++) {
+        if (
+            (x[i] == x[k]) ||                    // Same column
+            (i - x[i] == k - x[k]) ||            // Same major diagonal
+            (i + x[i] == k + x[k])               // Same minor diagonal
+        ) {
+            return false;
+        }
+    }
+    return true;
+}
+
+void printSolution(int x[10], int n) {
+    int i;
+    for (i = 1; i <= n; i++) {
+        printf("%d ", x[i]);
+    }
+    printf("\n");
