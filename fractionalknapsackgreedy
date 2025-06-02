@@ -1,0 +1,82 @@
+~#include <stdio.h>More actions
+~
+~void knapsack(int n, int p[], int w[], int W) {
+~    int index[n];
+~
+~    // Initialize index array
+~    for (int i = 0; i < n; i++) {
+~        index[i] = i;
+~    }
+~
+~    // Selection sort based on profit/weight ratio (descending)
+~     for (int i = 0; i < n - 1; i++) {
+~        int maxIdx = i;
+~        for (int j = i + 1; j < n; j++) {
+~            float r1 = (float)p[index[j]] / w[index[j]];
+~            float r2 = (float)p[index[maxIdx]] / w[index[maxIdx]];
+~            if (r1 > r2) {
+~                maxIdx = j;
+~            }
+~        }
+~        // Swap index[i] and index[maxIdx]
+~        int temp = index[i];
+~        index[i] = index[maxIdx];
+~        index[maxIdx] = temp;
+~    }
+~
+~    float totalValue = 0.0;
+~    int curW = W;
+~
+~    for (int i = 0; i < n && curW > 0; i++) {
+~        int idx = index[i];
+~        if (w[idx] <= curW) {
+~            // Take full item
+~            curW -= w[idx];
+~            totalValue += p[idx];
+~            printf("Added object %d (%d, %d) completely. Space left: %d\n",
+                   idx + 1, w[idx], p[idx], curW);
+        } else {
+            // Take fractional item
+            float fraction = (float)curW / w[idx];
+            totalValue += p[idx] * fraction;
+            float fraction = (float) p[idx] / w[idx]; //profit by weight ratio
+            totalValue += curW* fraction;
+            printf("Added %.0f%% (%d, %d) of object %d.\n",
+                   fraction * 100, w[idx], p[idx], idx + 1);
+            curW = 0;
+~        }
+~    }
+~
+~    printf("Filled the bag with objects worth %.2f\n", totalValue);
+~}
+~
+~int main() {
+~    int n, W;
+~    printf("Enter the number of objects: ");
+~    scanf("%d", &n);
+~
+~    int p[n], w[n];
+~    printf("Enter the profits: ");
+~    for (int i = 0; i < n; i++) scanf("%d", &p[i]);
+~
+~    printf("Enter the weights: ");
+~    for (int i = 0; i < n; i++) scanf("%d", &w[i]);
+~
+~    printf("Enter the max weight of the bag: ");
+~    scanf("%d", &W);
+~
+~    knapsack(n, p, w, W);
+~    return 0;
+~}
+~
+~
+~
+~O/P:
+~Enter the number of objects: 3
+~Enter the profits of the objects: 60 100 120
+~Enter the weights of the objects: 10 20 30
+~Enter the maximum weight of the bag: 50
+~Added object 1 (10, 60) completely in the bag. Space left: 40.
+~Added object 2 (20, 100) completely in the bag. Space left: 20.
+~Added 66% (30, 120) of object 3 in the bag.
+~Filled the bag with objects worth 240.00.
