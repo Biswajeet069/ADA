@@ -1,0 +1,65 @@
+#include <stdio.h>
+
+// Partition using the first element as pivot
+int partition(int arr[], int low, int high) {
+    int pivot = arr[low];
+    int i = low + 1;
+    int j = high;
+    
+    while (i <= j) {
+        while (i <= high && arr[i] <= pivot) i++;
+        while (j >= low && arr[j] > pivot) j--;
+        if (i < j) {
+            int temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+        }
+    }
+
+    // Swap pivot to its correct position
+    int temp = arr[low];
+    arr[low] = arr[j];
+    arr[j] = temp;
+
+    return j;
+}
+
+// Quick Sort
+void quickSort(int arr[], int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+// Print Array
+void printArray(int arr[], int size) {
+    for (int i = 0; i < size; i++)
+        printf("%d ", arr[i]);
+    printf("\n");
+}
+
+int main() {
+    int arr[] = {55, 28, 35, 78, 110, 48, 88};
+    int size = sizeof(arr) / sizeof(arr[0]);
+
+    printf("Original array: ");
+    printArray(arr, size);
+
+    quickSort(arr, 0, size - 1);
+
+    printf("Sorted array: ");
+    printArray(arr, size);
+
+    return 0;
+}
+
+
+
+
+O/P:
+
+Original array: 55 28 35 78 110 48 88 
+Sorted array: 28 35 48 55 78 88 110
